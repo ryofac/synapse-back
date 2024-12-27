@@ -7,7 +7,8 @@
       "dev": "ts-node-dev src/index.ts",
       "build": "npx tsc",
       "test": "echo \"Error: no test specified\" && exit 1",
-      "typeorm": "tsx --tsconfig ./tsconfig.json ./node_modules/typeorm/cli.js -d src/data-source.ts"
+      "typeorm": "tsx --tsconfig ./tsconfig.json ./node_modules/typeorm/cli.js -d src/data-source.ts",
+      "swagger": "ts-node ./src/utils/swagger.ts"
    },
    "keywords": [],
    "author": "",
