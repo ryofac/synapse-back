@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from "typeorm";
+import { Classroom } from "./class.entity";
 
 @Entity()
 export class User extends BaseEntity {
@@ -10,4 +19,11 @@ export class User extends BaseEntity {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Classroom, (classroom) => classroom.teacher)
+  createdClasses: Classroom[];
+
+  @ManyToMany(() => Classroom, (classroom) => classroom.participants)
+  @JoinTable()
+  joinedClasses: Classroom[];
 }
