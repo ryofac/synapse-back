@@ -27,4 +27,6 @@ export class UserRouter extends BaseRouter {
       handler: this.userController.getAllUsers,
     });
   }
+
+  addLoginRoute() {}
 }
