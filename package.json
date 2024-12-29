@@ -7,7 +7,7 @@
       "dev": "ts-node-dev src/index.ts",
       "build": "npx tsc",
       "test": "echo \"Error: no test specified\" && exit 1",
-      "typeorm": "tsx --tsconfig ./tsconfig.json ./node_modules/typeorm/cli.js -d src/data-source.ts",
+      "typeorm": "typeorm-ts-node-commonjs -d ./src/data-source.ts",
       "swagger": "ts-node ./src/utils/swagger.ts"
    },
    "keywords": [],
@@ -15,19 +15,22 @@
    "license": "ISC",
    "description": "",
    "dependencies": {
+      "@fastify/swagger": "^9.4.0",
+      "@fastify/swagger-ui": "^5.2.0",
       "@types/es6-shim": "^0.31.45",
-      "cors": "^2.8.5",
       "dotenv": "^16.4.7",
-      "express": "^4.21.2",
+      "fastify-type-provider-zod": "^4.0.2",
       "reflect-metadata": "^0.1.13",
       "sqlite3": "^5.1.7",
       "ts-node-dev": "^2.0.0",
       "tsx": "^4.19.2",
-      "typeorm": "0.3.20"
+      "typeorm": "0.3.20",
+      "zod": "^3.24.1"
    },
    "devDependencies": {
       "@biomejs/biome": "1.9.4",
       "@eslint/js": "^9.17.0",
+      "@fastify/cors": "^10.0.1",
       "@tsconfig/node22": "^22.0.0",
       "@types/cors": "^2.8.17",
       "@types/express": "^5.0.0",
@@ -35,10 +38,10 @@
       "@types/swagger-jsdoc": "^6.0.4",
       "@types/swagger-ui-express": "^4.1.7",
       "eslint": "^9.17.0",
+      "fastify": "^5.2.0",
       "globals": "^15.14.0",
       "nodemon": "^3.1.9",
       "swagger-jsdoc": "^6.2.8",
-      "swagger-ui-express": "^5.0.1",
       "ts-node": "10.9.1",
       "typescript": "^5.7.2",
       "typescript-eslint": "^8.18.2"
