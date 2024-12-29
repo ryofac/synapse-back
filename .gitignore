@@ -145,3 +145,7 @@ dist
 
 # Generated using ignr.py - github.com/Antrikshy/ignr.py
 
+
+
+# Test database
+database.db
