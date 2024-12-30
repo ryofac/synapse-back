@@ -1,5 +1,12 @@
-import type { FastifyInstance } from "fastify";
-import type { FastifyTypedInstance } from "../core/types";
+import type { FastifyInstance, RouteHandler } from "fastify";
+import type { FastifyTypedInstance, TypedRouteOptions } from "../core/types";
+type ExtendedRouteOptions = Omit<
+  TypedRouteOptions,
+  "middlewares" | "method"
+> & {
+  method?: string;
+  middlewares?: Array<RouteHandler>;
+};
 
 export abstract class BaseRouter {
   protected app: FastifyInstance;
@@ -17,5 +24,22 @@ export abstract class BaseRouter {
     return this.name;
   }
 
-  abstract configureRoutes(): FastifyInstance;
+  private configureRoutes(): FastifyInstance {
+    this.app.register(async (app, config, done) => {
+      this.registerRoutes();
+      done();
+    });
+    return this.app;
+  }
+
+  abstract registerRoutes(): void;
+
+  constructRoute({
+    method = "GET",
+    middlewares = [],
+    ...otherOptions
+  }: ExtendedRouteOptions) {
+    const finalRouteOptions = { method, middlewares, ...otherOptions };
+    this.app.route(finalRouteOptions);
+  }
 }

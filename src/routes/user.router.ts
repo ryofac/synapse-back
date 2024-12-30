@@ -1,5 +1,6 @@
 import { UserController } from "../controllers/user.controllers";
 import type { FastifyTypedInstance } from "../core/types";
+import { UserDetailsSchema, UserOutSchema } from "../schemas/user.schemas";
 import { BaseRouter } from "./base.router";
 
 export class UserRouter extends BaseRouter {
@@ -10,23 +11,34 @@ export class UserRouter extends BaseRouter {
     this.userController = new UserController();
   }
 
-  configureRoutes(): FastifyTypedInstance {
-    this.app.register((app, options, done) => {
-      this.addListRoute();
-      done();
-    });
-
-    return this.app;
+  registerRoutes(): void {
+    this.addListRoute();
+    this.addMeRoute();
   }
 
   addListRoute() {
-    this.app.route({
+    this.constructRoute({
       url: this.prefix,
       method: "GET",
-      schema: {},
+      schema: {
+        tags: ["users"],
+        response: { 200: UserOutSchema.array() },
+      },
       handler: this.userController.getAllUsers,
     });
   }
 
-  addLoginRoute() {}
+  addMeRoute() {
+    this.constructRoute({
+      url: `${this.prefix}me/`,
+      method: "GET",
+      schema: {
+        tags: ["users"],
+        security: [{ bearerAuth: [] }],
+        response: { 200: UserDetailsSchema },
+      },
+      preHandler: this.app.authenticate,
+      handler: this.userController.me,
+    });
+  }
 }
