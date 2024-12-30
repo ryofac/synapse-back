@@ -14,16 +14,28 @@ import {
 } from "fastify-type-provider-zod";
 import { AuthRouter } from "./routes/auth.router";
 import type { FastifyTypedInstance } from "./core/types";
-import { UserInSchema } from "./schemas/user.schemas";
+import { UserInSchema, UserOutSchema } from "./schemas/user.schemas";
+import { AuthResponseSchema } from "./schemas/auth.schema";
+import fastifyJwt from "@fastify/jwt";
 
 export function initServer() {
-  const app: FastifyTypedInstance =
-    fastify().withTypeProvider<ZodTypeProvider>();
+  const app: FastifyTypedInstance = fastify({
+    logger: true,
+  }).withTypeProvider<ZodTypeProvider>();
 
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
 
   app.register(fastifyCors, { origin: "*" });
+
+  app.register(fastifyJwt, {
+    secret: process.env.JWT_SECRET || "Your-Secret-Here",
+  });
+
+  app.addHook("preHandler", (req, res, next) => {
+    req.jwt = app.jwt;
+    return next();
+  });
 
   app.register(fastifySwagger, {
     openapi: {
@@ -39,6 +51,8 @@ export function initServer() {
       // TODO: Criar uma função que registre automaticamente schemas novos
       schemas: {
         UserIn: UserInSchema,
+        UserOut: UserOutSchema,
+        LoginResponse: AuthResponseSchema,
       },
     }),
   });

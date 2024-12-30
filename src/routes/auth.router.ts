@@ -1,7 +1,9 @@
 import { BaseRouter } from "./base.router";
 import type { FastifyTypedInstance } from "../core/types";
-import { UserInSchema } from "../schemas/user.schemas";
+import { UserInSchema, UserLoginSchema } from "../schemas/user.schemas";
 import { AuthController } from "../controllers/auth.controllers";
+import { AuthResponseSchema } from "../schemas/auth.schema";
+import { z } from "zod";
 
 export class AuthRouter extends BaseRouter {
   authController: AuthController;
@@ -11,29 +13,33 @@ export class AuthRouter extends BaseRouter {
     this.authController = new AuthController();
   }
 
-  configureRoutes(): FastifyTypedInstance {
-    this.app.register((app, config, done) => {
-      this.addRegisterRoute();
-      done();
-    });
-
-    return this.app;
+  registerRoutes() {
+    this.addRegisterRoute();
+    this.addLoginRoute();
   }
 
   addLoginRoute() {
-    this.app.route({
+    this.constructRoute({
       url: `${this.prefix}login/`,
       method: "POST",
-      schema: {},
-      handler: (req, res) => {},
+      schema: {
+        tags: ["auth"],
+        body: UserLoginSchema,
+        response: { 200: AuthResponseSchema },
+      },
+      handler: this.authController.login,
     });
   }
 
   addRegisterRoute() {
-    this.app.route({
+    this.constructRoute({
       url: `${this.prefix}register/`,
       method: "POST",
-      schema: { body: UserInSchema },
+      schema: {
+        tags: ["auth"],
+        body: UserInSchema,
+        response: { 201: z.null() },
+      },
       handler: this.authController.register,
     });
   }
