@@ -11,6 +11,7 @@ import type {
   RouteOptions,
 } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
+import type { UserPayload } from "../schemas/user.schemas";
 
 export type FastifyTypedInstance = FastifyInstance<
   RawServerDefault,
@@ -34,5 +35,14 @@ export type TypedRouteOptions = RouteOptions<
 declare module "fastify" {
   interface FastifyRequest {
     jwt: JWT;
+  }
+  export interface FastifyInstance {
+    authenticate: any;
+  }
+}
+
+declare module "@fastify/jwt" {
+  interface FastifyJWT {
+    user: UserPayload;
   }
 }

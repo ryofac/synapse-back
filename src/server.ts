@@ -1,4 +1,4 @@
-import { fastify } from "fastify";
+import { fastify, type FastifyReply, type FastifyRequest } from "fastify";
 import { fastifyCors } from "@fastify/cors";
 import { version } from "../package.json";
 import { fastifySwagger } from "@fastify/swagger";
@@ -16,7 +16,7 @@ import { AuthRouter } from "./routes/auth.router";
 import type { FastifyTypedInstance } from "./core/types";
 import { UserInSchema, UserOutSchema } from "./schemas/user.schemas";
 import { AuthResponseSchema } from "./schemas/auth.schema";
-import fastifyJwt from "@fastify/jwt";
+import fastifyJwt, { type FastifyJWT } from "@fastify/jwt";
 
 export function initServer() {
   const app: FastifyTypedInstance = fastify({
@@ -45,6 +45,15 @@ export function initServer() {
           "Aplicação de gerenciamento de fóruns e quizes em sala de aula",
         version,
       },
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: "apiKey",
+            name: "Authorization",
+            in: "header",
+          },
+        },
+      },
     },
     transform: jsonSchemaTransform,
     transformObject: createJsonSchemaTransformObject({
@@ -62,6 +71,25 @@ export function initServer() {
   const routes: Array<BaseRouter> = [new UserRouter(app), new AuthRouter(app)];
 
   const PORT_CHOSEN = Number.parseInt(process.env.PORT) || 3000;
+
+  app.decorate(
+    "authenticate",
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const authorization = req.headers.authorization;
+
+      if (!authorization) {
+        return reply.status(401).send({ message: "Authentication required" });
+      }
+      const [_, auth_token] = authorization.split(" ");
+
+      if (!auth_token) {
+        return reply.status(401).send({ message: "Authentication required" });
+      }
+
+      const decoded = req.jwt.verify<FastifyJWT["user"]>(auth_token);
+      req.user = decoded;
+    }
+  );
 
   app.listen({ port: PORT_CHOSEN }, () => {
     console.log(`Synapse API rodando em: ${PORT_CHOSEN}`);
