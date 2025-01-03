@@ -9,12 +9,19 @@ import {
 } from "typeorm";
 import { Classroom } from "./class.entity";
 
+export enum Roles {
+  admin = "admin",
+  teacher = "teacher",
+  moderator = "moderator",
+  student = "student",
+}
+
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ width: 20 })
+  @Column({ width: 20, unique: true })
   username: string;
 
   @Column()
@@ -23,10 +30,19 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @OneToMany(() => Classroom, (classroom) => classroom.teacher)
+  @Column({ default: Roles.student })
+  role: Roles;
+
+  @OneToMany(
+    () => Classroom,
+    classroom => classroom.teacher
+  )
   createdClasses: Classroom[];
 
-  @ManyToMany(() => Classroom, (classroom) => classroom.participants)
+  @ManyToMany(
+    () => Classroom,
+    classroom => classroom.participants
+  )
   @JoinTable()
   joinedClasses: Classroom[];
 }

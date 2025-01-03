@@ -1,7 +1,13 @@
+import { z } from "zod";
 import { UserController } from "../controllers/user.controllers";
 import type { FastifyTypedInstance } from "../core/types";
-import { UserDetailsSchema, UserOutSchema } from "../schemas/user.schemas";
+import {
+  UserCreateSchema,
+  UserDetailsSchema,
+  UserOutSchema,
+} from "../schemas/user.schemas";
 import { BaseRouter } from "./base.router";
+import { Roles } from "../entity/user.entity";
 
 export class UserRouter extends BaseRouter {
   userController: UserController;
@@ -14,6 +20,7 @@ export class UserRouter extends BaseRouter {
   registerRoutes(): void {
     this.addListRoute();
     this.addMeRoute();
+    this.addCreateUserRoute();
   }
 
   addListRoute() {
@@ -39,6 +46,22 @@ export class UserRouter extends BaseRouter {
       },
       preHandler: this.app.authenticate,
       handler: this.userController.me,
+    });
+  }
+
+  addCreateUserRoute() {
+    this.constructRoute({
+      url: `${this.prefix}`,
+      method: "POST",
+      schema: {
+        tags: ["users"],
+        body: UserCreateSchema,
+        description: "Rota de criação de usuários para administradores",
+        security: [{ bearerAuth: [] }],
+        response: { 201: z.null() },
+      },
+      preHandler: [this.app.authenticate, this.app.guard.role(Roles.admin)],
+      handler: this.userController.createUser,
     });
   }
 }
