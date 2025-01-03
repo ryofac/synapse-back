@@ -5,7 +5,11 @@ import {
   createJsonSchemaTransformObject,
   jsonSchemaTransform,
 } from "fastify-type-provider-zod";
-import { UserInSchema, UserOutSchema } from "../schemas/user.schemas";
+import {
+  UserCreateSchema,
+  UserInSchema,
+  UserOutSchema,
+} from "../schemas/user.schemas";
 import { AuthResponseSchema } from "../schemas/auth.schema";
 
 export function sweaggerFastifyPlugin(app: FastifyInstance) {
@@ -34,6 +38,7 @@ export function sweaggerFastifyPlugin(app: FastifyInstance) {
         UserIn: UserInSchema,
         UserOut: UserOutSchema,
         LoginResponse: AuthResponseSchema,
+        UserCreate: UserCreateSchema,
       },
     }),
   });

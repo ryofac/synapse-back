@@ -4,7 +4,12 @@ import type { UserDetails, UserOut } from "../schemas/user.schemas";
 import { mapClassToClassMinimal } from "./class.mapper";
 
 export function mapUserToUserOut(user: User): UserOut {
-  return { id: user.id, username: user.username, fullname: user.fullName };
+  return {
+    id: user.id,
+    username: user.username,
+    fullname: user.fullName,
+    role: user.role,
+  };
 }
 
 export function mapUserToUserDetails(user: User): UserDetails {
@@ -18,6 +23,7 @@ export function mapUserToUserDetails(user: User): UserDetails {
     id: user.id,
     fullname: user.fullName,
     username: user.username,
+    role: user.role,
     classes_joined: classesConverted,
   };
 }

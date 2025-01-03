@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ClassMinimalSchema } from "./class.schemas";
+import { Roles } from "../entity/user.entity";
 
 export const UserBaseSchema = z.object({
   username: z
@@ -7,9 +8,11 @@ export const UserBaseSchema = z.object({
     .max(20),
   fullname: z.string({ message: "Nome completo do usuário" }),
   password: z.string({ message: "Senha do usuário" }),
+  role: z.nativeEnum(Roles),
 });
 
-export const UserInSchema = UserBaseSchema;
+export const UserInSchema = UserBaseSchema.omit({ role: true });
+export const UserCreateSchema = UserBaseSchema;
 
 export const UserLoginSchema = z.object({
   username: z
@@ -30,6 +33,7 @@ export const UserDetailsSchema = UserBaseSchema.extend({
 export type UserIn = z.infer<typeof UserInSchema>;
 export type UserOut = z.infer<typeof UserOutSchema>;
 export type UserLogin = z.infer<typeof UserLoginSchema>;
+export type UserCreate = z.infer<typeof UserCreateSchema>;
 export type UserDetails = z.infer<typeof UserDetailsSchema>;
 export type UserPayload = {
   id: number;
