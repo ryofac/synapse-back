@@ -3,6 +3,7 @@ import { User } from "../entity/user.entity";
 import { BcryptHashProvider } from "../external/providers/bcrypt.provider";
 import type { HashProvider } from "../providers/hash.provider";
 import type { UserIn, UserLogin } from "../schemas/user.schemas";
+import { InvalidCredentialsException } from "../errors/auth.exceptions";
 
 export class AuthController {
   hashProvider: HashProvider;
@@ -31,14 +32,12 @@ export class AuthController {
 
     const user_db = await User.findOneBy({ username });
     if (!user_db) {
-      reply.send(400);
-      return;
+      throw new InvalidCredentialsException();
     }
 
     const isValid = await this.hashProvider.verify(user_db.password, password);
     if (!isValid) {
-      reply.send(400);
-      return;
+      throw new InvalidCredentialsException();
     }
 
     const payload = { id: user_db.id, username, fullName: user_db.fullName };

@@ -11,6 +11,7 @@ import {
   UserOutSchema,
 } from "../schemas/user.schemas";
 import { AuthResponseSchema } from "../schemas/auth.schema";
+import { HttpErrorSchema } from "../schemas/error.schema";
 
 export function sweaggerFastifyPlugin(app: FastifyInstance) {
   app.register(fastifySwagger, {
@@ -39,6 +40,7 @@ export function sweaggerFastifyPlugin(app: FastifyInstance) {
         UserOut: UserOutSchema,
         LoginResponse: AuthResponseSchema,
         UserCreate: UserCreateSchema,
+        ErrorSchema: HttpErrorSchema,
       },
     }),
   });
