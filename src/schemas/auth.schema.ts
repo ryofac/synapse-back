@@ -5,4 +5,9 @@ export const AuthResponseSchema = z.object({
   refresh_token: z.string(),
 });
 
+export const RefreshInSchema = z.object({
+  refresh_token: z.string(),
+});
+
 export type AuthResponse = z.infer<typeof AuthResponseSchema>;
+export type RefreshIn = z.infer<typeof RefreshInSchema>;
