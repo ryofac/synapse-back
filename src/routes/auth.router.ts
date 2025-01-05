@@ -2,7 +2,7 @@ import { BaseRouter } from "./base.router";
 import type { FastifyTypedInstance } from "../core/types";
 import { UserInSchema, UserLoginSchema } from "../schemas/user.schemas";
 import { AuthController } from "../controllers/auth.controllers";
-import { AuthResponseSchema } from "../schemas/auth.schema";
+import { AuthResponseSchema, RefreshInSchema } from "../schemas/auth.schema";
 import { z } from "zod";
 
 export class AuthRouter extends BaseRouter {
@@ -16,6 +16,7 @@ export class AuthRouter extends BaseRouter {
   registerRoutes() {
     this.addRegisterRoute();
     this.addLoginRoute();
+    this.addRefreshRoute();
   }
 
   addLoginRoute() {
@@ -41,6 +42,19 @@ export class AuthRouter extends BaseRouter {
         response: { 201: z.null() },
       },
       handler: this.authController.register,
+    });
+  }
+
+  addRefreshRoute() {
+    this.constructRoute({
+      url: `${this.prefix}refresh/`,
+      method: "POST",
+      schema: {
+        tags: ["auth"],
+        body: RefreshInSchema,
+        response: { 200: AuthResponseSchema },
+      },
+      handler: this.authController.refresh,
     });
   }
 }

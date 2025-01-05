@@ -19,9 +19,19 @@ export class InvalidCredentialsException extends HttpExcpetion {
 export class AccessTokenExpiredException extends HttpExcpetion {
   constructor() {
     super(
-      "Access token is invalid or has expired - please log in again",
+      "Access token is invalid or has expired - refresh or log in again",
       401,
       "ACCESS_TOKEN_EXPIRED"
+    );
+  }
+}
+
+export class RefreshTokenExpired extends HttpExcpetion {
+  constructor() {
+    super(
+      "Refresh token is invalid or has expired - please log in again",
+      401,
+      "REFRESH_TOKEN_EXPIRED"
     );
   }
 }
