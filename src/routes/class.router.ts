@@ -1,7 +1,7 @@
 import { BaseRouter } from "./base.router";
 import type { FastifyInstance } from "fastify";
 import { ClassroomController } from "../controllers/classroom.controllers";
-import { ClassMinimalSchema } from "../schemas/class.schemas";
+import { ClassCreateSchema, ClassMinimalSchema } from "../schemas/class.schemas";
 
 export class ClassroomRouter extends BaseRouter {
   classroomController: ClassroomController;
@@ -14,6 +14,7 @@ export class ClassroomRouter extends BaseRouter {
   registerRoutes(): void {
     this.addListClassroomRoute();
     this.addCreateClassroomRoute();
+    this.addGetClassroomRoute();
   }
 
   addListClassroomRoute() {
@@ -46,6 +47,7 @@ export class ClassroomRouter extends BaseRouter {
       method: "POST",
       schema: {
         tags: ["classroom"],
+        body: ClassCreateSchema,
         response: { 201: ClassMinimalSchema },
       },
       handler: this.classroomController.createClassroom,

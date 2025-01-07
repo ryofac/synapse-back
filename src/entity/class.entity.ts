@@ -18,7 +18,8 @@ export class Classroom extends BaseEntity {
 
   @ManyToOne(
     () => User,
-    user => user.createdClasses
+    user => user.createdClasses,
+    {nullable: false}
   )
   teacher: User;
 
