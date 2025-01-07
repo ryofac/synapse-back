@@ -6,6 +6,7 @@ import type {
   UserDetails,
   UserPayload,
 } from "../schemas/user.schemas";
+import { UserNotFoundException } from "../errors/user.exceptions";
 
 export class UserController {
   getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -21,7 +22,7 @@ export class UserController {
 
     const user_db: User = await User.findOneBy({ username });
     if (!user_db) {
-      return reply.code(401);
+      throw new UserNotFoundException();
     }
     const userReply: UserDetails = mapUserToUserDetails(user_db);
     reply.send(userReply).code(200);

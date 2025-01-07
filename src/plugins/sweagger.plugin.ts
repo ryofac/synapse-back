@@ -7,10 +7,12 @@ import {
 } from "fastify-type-provider-zod";
 import {
   UserCreateSchema,
+  UserDetailsSchema,
   UserInSchema,
   UserOutSchema,
 } from "../schemas/user.schemas";
-import { AuthResponseSchema } from "../schemas/auth.schema";
+import { AuthResponseSchema, RefreshInSchema } from "../schemas/auth.schema";
+import { HttpErrorSchema } from "../schemas/error.schema";
 
 export function sweaggerFastifyPlugin(app: FastifyInstance) {
   app.register(fastifySwagger, {
@@ -36,9 +38,12 @@ export function sweaggerFastifyPlugin(app: FastifyInstance) {
       // TODO: Criar uma função que registre automaticamente schemas novos
       schemas: {
         UserIn: UserInSchema,
+        UserDetails: UserDetailsSchema,
         UserOut: UserOutSchema,
         LoginResponse: AuthResponseSchema,
+        RefreshIn: RefreshInSchema,
         UserCreate: UserCreateSchema,
+        ErrorSchema: HttpErrorSchema,
       },
     }),
   });
