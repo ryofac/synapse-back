@@ -1,5 +1,5 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
-import { Classroom } from "../entity/class.entity";
+import { Classroom } from "../entity/classroom.entity";
 import { mapClassToClassMinimal } from "../mappers/class.mapper";
 import type { ClassMinimal } from "../schemas/class.schemas";
 import { User } from "../entity/user.entity";

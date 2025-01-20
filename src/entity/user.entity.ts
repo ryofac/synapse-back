@@ -7,7 +7,7 @@ import {
   ManyToMany,
   JoinTable,
 } from "typeorm";
-import { Classroom } from "./class.entity";
+import { Classroom } from "./classroom.entity";
 
 export enum Roles {
   admin = "admin",
@@ -33,16 +33,10 @@ export class User extends BaseEntity {
   @Column({ default: Roles.student })
   role: Roles;
 
-  @OneToMany(
-    () => Classroom,
-    classroom => classroom.teacher
-  )
+  @OneToMany(() => Classroom, (classroom) => classroom.teacher)
   createdClasses: Classroom[];
 
-  @ManyToMany(
-    () => Classroom,
-    classroom => classroom.participants
-  )
+  @ManyToMany(() => Classroom, (classroom) => classroom.participants)
   @JoinTable()
   joinedClasses: Classroom[];
 }

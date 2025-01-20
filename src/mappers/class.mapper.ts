@@ -1,4 +1,4 @@
-import type { Classroom } from "../entity/class.entity";
+import type { Classroom } from "../entity/classroom.entity";
 import type { ClassMinimal } from "../schemas/class.schemas";
 
 export function mapClassToClassMinimal(classroom: Classroom): ClassMinimal {

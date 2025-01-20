@@ -1,4 +1,4 @@
-import type { Classroom } from "../entity/class.entity";
+import type { Classroom } from "../entity/classroom.entity";
 import type { User } from "../entity/user.entity";
 import type { UserDetails, UserOut } from "../schemas/user.schemas";
 import { mapClassToClassMinimal } from "./class.mapper";
