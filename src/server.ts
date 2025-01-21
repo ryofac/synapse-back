@@ -20,7 +20,7 @@ export function initServer() {
   registerRouters(app);
   registerExceptionHandler(app);
 
-  app.listen({ port: PORT_CHOSEN }, () => {
+  app.listen({ port: PORT_CHOSEN, host: "0.0.0.0" }, () => {
     console.log(`Synapse API rodando em: ${PORT_CHOSEN}`);
   });
 }
