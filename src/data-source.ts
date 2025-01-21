@@ -1,13 +1,14 @@
 import { DataSource } from "typeorm";
 import { User } from "./entity/user.entity";
 import { Classroom } from "./entity/classroom.entity";
+import { Lesson } from "./entity/lesson.entity";
 
 export const AppDataSource = new DataSource({
   type: "sqlite",
   database: "./database.db",
   synchronize: true,
   logging: true,
-  entities: [User, Classroom],
+  entities: [User, Classroom, Lesson],
   subscribers: [],
   migrations: [],
 });

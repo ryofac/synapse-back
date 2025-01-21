@@ -7,7 +7,7 @@ import { User } from "../entity/user.entity";
 export class ClassroomController {
   getAllClasses = async (request: FastifyRequest, reply: FastifyReply) => {
     const allClasses = await Classroom.find();
-    const classroomOut = allClasses.map((classroom) => {
+    const classroomOut = allClasses.map(classroom => {
       mapClassToClassMinimal(classroom);
     });
 

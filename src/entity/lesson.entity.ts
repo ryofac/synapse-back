@@ -1,7 +1,8 @@
-import { BaseEntity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ManyToOne } from "typeorm";
 import { Classroom } from "./classroom.entity";
 
+@Entity()
 export class Lesson extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -18,6 +19,9 @@ export class Lesson extends BaseEntity {
   @Column()
   description: string;
 
-  @ManyToOne(() => Classroom, (classroom) => classroom.lessons)
+  @ManyToOne(
+    () => Classroom,
+    classroom => classroom.lessons
+  )
   classroom: Classroom;
 }
