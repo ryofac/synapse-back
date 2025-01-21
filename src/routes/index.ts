@@ -3,6 +3,7 @@ import { UserRouter } from "./user.router";
 import type { BaseRouter } from "./base.router";
 import { AuthRouter } from "./auth.router";
 import { ClassroomRouter } from "./class.router";
+import { LessonRouter } from "./lesson.schema";
 export { UserRouter };
 
 export function registerRouters(app: FastifyInstance) {
@@ -10,5 +11,6 @@ export function registerRouters(app: FastifyInstance) {
     new UserRouter(app),
     new AuthRouter(app),
     new ClassroomRouter(app),
+    new LessonRouter(app),
   ];
 }
