@@ -30,7 +30,9 @@ export class UserRouter extends BaseRouter {
       schema: {
         tags: ["users"],
         response: { 200: UserOutSchema.array() },
+        security: [{ bearerAuth: [] }],
       },
+      preHandler: this.app.authenticate,
       handler: this.userController.getAllUsers,
     });
   }

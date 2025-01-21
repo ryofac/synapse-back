@@ -25,7 +25,7 @@ export class UserController {
       throw new UserNotFoundException();
     }
     const userReply: UserDetails = mapUserToUserDetails(user_db);
-    reply.send(userReply).code(200);
+    reply.send(userReply).status(200);
   };
 
   createUser = async (request: FastifyRequest, reply: FastifyReply) => {
