@@ -18,13 +18,22 @@ export class Classroom extends BaseEntity {
   @Column()
   className: string;
 
-  @ManyToOne(() => User, (user) => user.createdClasses)
+  @ManyToOne(
+    () => User,
+    user => user.createdClasses
+  )
   teacher: User;
 
-  @ManyToMany(() => User, (user) => user.joinedClasses)
+  @ManyToMany(
+    () => User,
+    user => user.joinedClasses
+  )
   participants: User[];
 
   // Representa a relação de um para muitos entre Classroom e Lesson
-  @OneToMany(() => Lesson, (lesson) => lesson.classroom)
+  @OneToMany(
+    () => Lesson,
+    lesson => lesson.classroom
+  )
   lessons: Lesson[];
 }

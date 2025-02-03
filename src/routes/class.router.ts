@@ -1,7 +1,10 @@
 import { BaseRouter } from "./base.router";
 import type { FastifyInstance } from "fastify";
 import { ClassroomController } from "../controllers/classroom.controllers";
-import { ClassMinimalSchema } from "../schemas/class.schemas";
+import {
+  ClassMinimalSchema,
+  ClassroomCreateSchema,
+} from "../schemas/class.schemas";
 import { z } from "zod";
 
 export class ClassroomRouter extends BaseRouter {
@@ -49,6 +52,7 @@ export class ClassroomRouter extends BaseRouter {
       schema: {
         tags: ["classroom"],
         response: { 201: z.null() },
+        body: ClassroomCreateSchema,
       },
       handler: this.classroomController.createClassroom,
     });
