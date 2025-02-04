@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { User } from "../entity/user.entity";
+import { Roles, User } from "../entity/user.entity";
 import { BcryptHashProvider } from "../external/providers/bcrypt.provider";
 import type { HashProvider } from "../providers/hash.provider";
 import type { UserIn, UserLogin, UserPayload } from "../schemas/user.schemas";
@@ -17,7 +17,7 @@ export class AuthController {
   }
 
   register = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { username, password, fullname }: UserIn = request.body;
+    const { username, password, fullname, isTeacher }: UserIn = request.body;
 
     const toBeCreated = new User();
 
@@ -25,6 +25,7 @@ export class AuthController {
 
     toBeCreated.username = username;
     toBeCreated.fullName = fullname;
+    toBeCreated.role = isTeacher ? Roles.teacher : Roles.student;
 
     await User.save(toBeCreated);
 

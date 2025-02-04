@@ -11,7 +11,10 @@ export const UserBaseSchema = z.object({
   role: z.nativeEnum(Roles),
 });
 
-export const UserInSchema = UserBaseSchema.omit({ role: true });
+export const UserInSchema = UserBaseSchema.extend({
+  isTeacher: z.boolean().default(false).optional(),
+}).omit({ role: true });
+
 export const UserCreateSchema = UserBaseSchema;
 
 export const UserLoginSchema = z.object({
