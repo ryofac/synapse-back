@@ -1,7 +1,7 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
 import { Classroom } from "../entity/classroom.entity";
 import { mapClassToClassMinimal } from "../mappers/class.mapper";
-import type { ClassCreate, ClassMinimal } from "../schemas/class.schemas";
+import type { ClassCreate } from "../schemas/class.schemas";
 import { User } from "../entity/user.entity";
 
 export class ClassroomController {
@@ -10,6 +10,8 @@ export class ClassroomController {
     const mappedClasses = allClasses.map(classroom => {
       return mapClassToClassMinimal(classroom);
     });
+
+    console.log(mappedClasses);
     reply.status(200).send(mappedClasses);
   };
 
@@ -23,7 +25,8 @@ export class ClassroomController {
   };
 
   createClassroom = async (request: FastifyRequest, reply: FastifyReply) => {
-    const { className, teacher_id }: ClassCreate = request.body;
+    const { className, teacher_id, description, previewUrl }: ClassCreate =
+      request.body;
 
     const teacher = await User.findOne({ where: { id: teacher_id } });
 
@@ -35,6 +38,8 @@ export class ClassroomController {
 
     classToBeCreated.className = className;
     classToBeCreated.teacher = teacher;
+    classToBeCreated.description = description;
+    classToBeCreated.previewUrl = previewUrl;
 
     await Classroom.save(classToBeCreated);
 

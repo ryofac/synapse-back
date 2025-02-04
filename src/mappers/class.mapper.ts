@@ -6,5 +6,7 @@ export function mapClassToClassMinimal(classroom: Classroom): ClassMinimal {
     className: classroom.className,
     id: classroom.id,
     teacher_id: classroom.teacher.id,
+    description: classroom.description,
+    previewUrl: classroom.previewUrl,
   };
 }

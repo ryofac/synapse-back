@@ -18,6 +18,12 @@ export class Classroom extends BaseEntity {
   @Column()
   className: string;
 
+  @Column({ nullable: true })
+  previewUrl?: string;
+
+  @Column({ nullable: true })
+  description?: string;
+
   @ManyToOne(
     () => User,
     user => user.createdClasses
